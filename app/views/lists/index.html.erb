@@ -1,0 +1,7 @@
+<h1>lists</h1>
+<ol>
+  <% @lists.each do |list|%>
+   <li class="list-group-item"><%= list.name %></li>
+   <li class="list-group-item"><%= link_to "Show", list_path(list) %></li>
+  <% end %>
+</ol>

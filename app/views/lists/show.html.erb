@@ -1,0 +1,7 @@
+<ul class="m-5 list-group">
+  <li class="list-group-item"><%= @list.name %></li>
+  <li class="list-group-item"><%= link_to "Delete",
+    list_path(@list),
+    data: {turbo_method: :delete, turbo_confirm: "Are you sure?"}
+  %></li>
+</ul>
