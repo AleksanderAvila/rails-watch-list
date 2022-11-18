@@ -1,39 +1,38 @@
-class ListsController < ApplicationController
-
-  def index
-    @lists = List.all
-  end
+class BookmarksController < ApplicationController
+  before_action :set_bookmark, only: :destroy
+  before_action :set_list, only: [:new, :create]
 
   def new
-
-    @list = List.new
+    @bookmark = Bookmark.new
   end
 
   def create
-    @list = List.new(list_params)
-    @list.save
-
-    redirect_to list_path(@list)
-  end
-
-  def edit
-    @list = @list.find(params[:id])
-  end
-
-  def show
-    @list = List.find(params[:id])
+    @bookmark = Bookmark.new(bookmark_params)
+    @bookmark.list = @list
+    if @bookmark.save
+      redirect_to list_path(@list)
+    else
+      @review = Review.new
+      render :new, status: :unprocessable_entity
+    end
   end
 
   def destroy
-    @list = List.find(params[:id])
-    @list.destroy
-
-    redirect_to lists_path, status: :see_other
+    @bookmark.destroy
+    redirect_to list_path(@bookmark.list), status: :see_other
   end
 
   private
 
-  def list_params
-    params.require(:list).permit(:name)
+  def bookmark_params
+    params.require(:bookmark).permit(:comment, :movie_id)
+  end
+
+  def set_bookmark
+    @bookmark = Bookmark.find(params[:id])
+  end
+
+  def set_list
+    @list = List.find(params[:list_id])
   end
 end
